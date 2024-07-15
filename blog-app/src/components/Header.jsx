@@ -1,7 +1,6 @@
 import { Button, Navbar, TextInput } from "flowbite-react";
 import { Link, useLocation } from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
-import React from "react";
 import { FaMoon } from "react-icons/fa";
 
 export default function Header() {
