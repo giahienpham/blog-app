@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import { Alert, Button, Modal, ModalBody, TextInput } from "flowbite-react";
 import { useEffect, useRef, useState } from "react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
+import { Link } from "react-router-dom";
 import {
   getDownloadURL,
   getStorage,
@@ -23,7 +24,7 @@ import {
 import { useDispatch } from "react-redux";
 
 export default function DashboardProfile() {
-  const { currentUser, error } = useSelector((state) => state.user);
+  const { currentUser, error, loading } = useSelector((state) => state.user);
   const [imageFile, setImageFile] = useState(null);
   const [imageFileUploadProgress, setImageFileUploadProgress] = useState(null);
   const [imageFileUploadError, setImageFileUploadError] = useState(null);
@@ -160,8 +161,8 @@ export default function DashboardProfile() {
   // handling signout
   const handleSignout = async () => {
     try {
-      const res = await fetch('/api/user/signout', {
-        method: 'POST',
+      const res = await fetch("/api/user/signout", {
+        method: "POST",
       });
       const data = await res.json();
       if (!res.ok) {
@@ -242,15 +243,31 @@ export default function DashboardProfile() {
           placeholder="Password"
           onChange={handleChange}
         />
-        <Button type="submit" gradientDuoTone="purpleToBlue" outline>
-          Update
+        <Button
+          type="submit"
+          gradientDuoTone="purpleToBlue"
+          outline
+          disabled={loading || imageFileUploading}
+        >
+          {loading ? "Loading..." : "Update"}
         </Button>
+        {currentUser.isAdmin && (
+          <Link to={"/create-post"}>
+            <Button
+              type="button"
+              gradientDuoTone="purpleToPink"
+              className="w-full"
+            >
+              Create a post
+            </Button>
+          </Link>
+        )}
       </form>
       <div className=" flex justify-between mt-5">
         <span onClick={() => setShowModal(true)} className="cursor-pointer">
           Delete Account
         </span>
-        <span onClick={handleSignout} className='cursor-pointer'>
+        <span onClick={handleSignout} className="cursor-pointer">
           Sign Out
         </span>
       </div>
