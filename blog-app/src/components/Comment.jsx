@@ -64,7 +64,7 @@ export default function Comment({ comment, onLike, onEdit, onDelete }) {
           <span className="font-bold mr-1 text-xs truncate">
             {user ? `@${user.username}` : "anonymous user"}
           </span>
-          <span className="text-gray-500 text-xs">
+          <span className="dark:text-gray-300 text-gray-500 text-xs">
             {moment(comment.createdAt).fromNow()}
           </span>
         </div>
@@ -97,12 +97,14 @@ export default function Comment({ comment, onLike, onEdit, onDelete }) {
           </>
         ) : (
           <>
-            <p className="text-gray-500 pb-2">{comment.content}</p>
+            <p className="dark:text-gray-300 text-gray-500 pb-2">
+              {comment.content}
+            </p>
             <div className="flex items-center pt-2 text-xs border-t dark:border-gray-700 max-w-fit gap-2">
               <button
                 type="button"
                 onClick={() => onLike(comment._id)}
-                className={`text-gray-400 hover:text-blue-500 ${
+                className={`dark:text-gray-300 text-gray-500 hover:text-blue-500 ${
                   currentUser &&
                   comment.likes.includes(currentUser._id) &&
                   "!text-blue-500"
@@ -110,7 +112,7 @@ export default function Comment({ comment, onLike, onEdit, onDelete }) {
               >
                 <FaThumbsUp className="text-sm" />
               </button>
-              <p className="text-gray-400">
+              <p className="dark:text-gray-300 text-gray-500">
                 {comment.numberOfLikes > 0 &&
                   comment.numberOfLikes +
                     " " +
@@ -122,14 +124,14 @@ export default function Comment({ comment, onLike, onEdit, onDelete }) {
                     <button
                       type="button"
                       onClick={handleEdit}
-                      className="text-gray-400 hover:text-blue-500"
+                      className="dark:text-gray-300 text-gray-500 hover:text-blue-500"
                     >
                       Edit
                     </button>
                     <button
                       type="button"
                       onClick={() => onDelete(comment._id)}
-                      className="text-gray-400 hover:text-red-500"
+                      className="dark:text-gray-300 text-gray-500 hover:text-red-500"
                     >
                       Delete
                     </button>

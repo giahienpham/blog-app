@@ -4,9 +4,10 @@ import { Link } from "react-router-dom";
 import {
   BsFacebook,
   BsInstagram,
-  BsTwitter,
   BsGithub,
   BsDribbble,
+  BsX,
+  BsYoutube,
 } from "react-icons/bs";
 
 export default function FooterComponent() {
@@ -34,13 +35,13 @@ export default function FooterComponent() {
                   rel="noopener noreferrer"
                   target="_blank"
                 >
-                  About us!
+                  About me!
                 </Footer.Link>
                 <Footer.Link>Hien's Portfolio</Footer.Link>
               </Footer.LinkGroup>
             </div>
             <div>
-              <Footer.Title title="Follow us" />
+              <Footer.Title title="Follow me" />
               <Footer.LinkGroup col>
                 <Footer.Link
                   href="https://github.com/giahienpham"
@@ -71,9 +72,18 @@ export default function FooterComponent() {
             year={new Date().getFullYear()}
           />
           <div className="flex gap-6 sm:mt-0 mt-4 sm:justify-center">
-            <Footer.Icon href="#" icon={BsFacebook} />
-            <Footer.Icon href="#" icon={BsInstagram} />
-            <Footer.Icon href="#" icon={BsTwitter} />
+            <Footer.Icon
+              href="https://www.facebook.com/giahien.pham.107"
+              icon={BsFacebook}
+            />
+            <Footer.Icon
+              href="https://www.instagram.com/giahien.pham/"
+              icon={BsInstagram}
+            />
+            <Footer.Icon
+              href="https://www.youtube.com/@giahienpham3462"
+              icon={BsYoutube}
+            />
             <Footer.Icon
               href="https://github.com/giahienpham"
               icon={BsGithub}
