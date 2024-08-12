@@ -26,24 +26,39 @@ export default function UpdatePost() {
   const { currentUser } = useSelector((state) => state.user);
 
   useEffect(() => {
-    try {
-      const fetchPost = async () => {
+    const fetchPost = async () => {
+      try {
         const res = await fetch(`/api/post/getposts?postId=${postId}`);
         const data = await res.json();
+        console.log("Fetched Data:", data); // Debugging
         if (!res.ok) {
           console.log(data.message);
           setPublishError(data.message);
           return;
         }
-        if (res.ok) {
+        if (res.ok && data.posts.length > 0) {
           setPublishError(null);
-          setFormData(data.posts[0]);
+          setFormData({
+            title: data.posts[0].title || "",
+            content: data.posts[0].content || "",
+            category: data.posts[0].category || "uncategorized",
+            image: data.posts[0].image || "",
+            _id: data.posts[0]._id || "", // Ensure _id exists
+          });
+          console.log("Set Form Data:", data.posts[0]); // Debugging
+        } else {
+          setPublishError("Post not found.");
         }
-      };
+      } catch (error) {
+        console.log("Fetch Error:", error.message);
+        setPublishError("Failed to fetch post data.");
+      }
+    };
 
+    if (postId) {
       fetchPost();
-    } catch (error) {
-      console.log(error.message);
+    } else {
+      setPublishError("Post ID is missing.");
     }
   }, [postId]);
 
@@ -85,9 +100,24 @@ export default function UpdatePost() {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    console.log("Submitting Form Data:", formData); // Debugging
+    console.log("Post ID from useParams:", postId); // Debugging
+    console.log("User ID:", currentUser?._id); // Debugging
+
+    if (!postId) {
+      setPublishError("Post ID is missing.");
+      return;
+    }
+
+    if (!currentUser || !currentUser._id) {
+      setPublishError("You must be logged in to update a post.");
+      return;
+    }
+
     try {
       const res = await fetch(
-        `/api/post/updatepost/${formData._id}/${currentUser._id}`,
+        `/api/post/updatepost/${postId}/${currentUser._id}`,
         {
           method: "PUT",
           headers: {
@@ -98,7 +128,7 @@ export default function UpdatePost() {
       );
       const data = await res.json();
       if (!res.ok) {
-        setPublishError(data.message);
+        setPublishError(data.message || "Failed to update the post.");
         return;
       }
 
@@ -107,6 +137,7 @@ export default function UpdatePost() {
         navigate(`/post/${data.slug}`);
       }
     } catch (error) {
+      console.log("Submit Error:", error);
       setPublishError("Something went wrong");
     }
   };
